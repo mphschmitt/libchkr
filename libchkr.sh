@@ -9,12 +9,19 @@ SHARED_OBJECT="SHARED_OBJECT"
 DIRECTORY="DIRECTORY"
 UNFIT="UNFIT"
 
+###### HTML functions ######
+
 function html_add_header ()
 {
-	echo "<html>" >> "$OUTPUT_FILE"
-	echo "    <head>" >> "$OUTPUT_FILE"
-	echo "    </head>" >> "$OUTPUT_FILE"
-	echo "    <body>" >> "$OUTPUT_FILE"
+	{
+		echo "<!DOCTYPE html>"
+		echo "<html>"
+		echo "    <head>"
+		echo "        <meta charset=\"utf-8\"></meta>"
+		echo "        <title>$PROGRAM_NAME</title>"
+		echo "    </head>"
+		echo "    <body>"
+	} >> "$OUTPUT_FILE"
 
 }
 
@@ -23,6 +30,94 @@ function html_close ()
 	echo "    </body>" >> "$OUTPUT_FILE"
 	echo "</html>" >> "$OUTPUT_FILE"
 }
+
+function html_add_file_infos ()
+{
+	local ID
+	local FILE_PATH
+	local DEPENDENCIES
+	local CHECKSUM
+
+	FILE_PATH="$1"
+	CHECKSUM=($(echo -n "$FILE_PATH" | md5sum)) # md5sum adds an useless '-' character after the checksum
+	ID=${CHECKSUM[0]}
+	DEPENDENCIES="$2"
+
+	printf "       <div id=$ID path=$1>\n        $2\n         </div>\n" >> "$OUTPUT_FILE"
+}
+
+###### Analysis functions ######
+
+function is_directory_empty ()
+{
+	local DIR_PATH
+	local NB_OF_FILES
+
+	DIR_PATH="$1"
+	NB_OF_FILES=$(ls -1 $DIR_PATH | wc -l)
+
+	echo "There are $NB_OF_FILES in the directory $DIR_PATH"
+	if [[ "$NB_OF_FILES" -eq 0 ]]
+	then
+		true; return
+	fi
+
+	false
+}
+
+function analyse_elf ()
+{
+	local FILE_PATH
+	local DEPENDENCIES
+
+	FILE_PATH="$1"
+	DEPENDENCIES=$(ldd -r "$1")
+
+	html_add_file_infos "$1" "$DEPS"
+	return 0
+}
+
+function analyze_directory ()
+{
+	local DIR_PATH
+
+	DIR_PATH="$1"
+
+	if is_directory_empty "$DIR_PATH"; then return; fi
+
+	for file in "$DIR_PATH"/*
+	do
+		echo "file: ${file}"
+		analyze_file "$file"
+	done
+}
+
+function analyze_file ()
+{
+	local TYPE
+	local FILE_PATH
+
+	FILE_PATH="$1"
+
+	TYPE=$(file "$1" | grep "shared object" )
+	if [[ -n "$TYPE" ]]
+	then
+		analyse_elf "$FILE_PATH"
+		return 0
+	fi
+
+	TYPE=$(file "$FILE_PATH" | grep "directory" )
+	if [[ -n "$TYPE" ]]
+	then
+		analyze_directory "$FILE_PATH"
+		return 0
+	fi
+
+	echo "$UNFIT"
+	return 0
+}
+
+###### Utilities functions ######
 
 function print_usage ()
 {
@@ -34,63 +129,11 @@ function print_usage ()
 	echo "  <folder>        The name of the folder to analyze."
 	echo "  -v              Verbose output."
 	echo "  -V              Print version and exit."
+	echo "  -h              Print this help message and exit."
+	echo "  -p              The port used to access the report."
 }
 
-function is_directory_empty ()
-{
-	local NB_OF_FILES
-
-	NB_OF_FILES=$(ls -1 $1 | wc -l)
-	echo "There are $NB_OF_FILES in the directory $1"
-	if [[ "$NB_OF_FILES" -eq 0 ]]
-	then
-		true; return
-	fi
-
-	false
-}
-
-function get_dependecies ()
-{
-	local DEPS
-
-	DEPS=$(ldd -r "$1")
-	echo "${DEPS}"
-	return 0
-}
-
-function analyze_directory ()
-{
-	if is_directory_empty "$1"; then return; fi
-
-	for file in "$1"/*
-	do
-		echo "file: ${file}"
-		analyze_file "$file"
-	done
-}
-
-function analyze_file ()
-{
-	local TYPE
-
-	TYPE=$(file "$1" | grep "shared object" )
-	if [[ -n "$TYPE" ]]
-	then
-		get_dependecies "$1"
-		return 0
-	fi
-
-	TYPE=$(file "$1" | grep "directory" )
-	if [[ -n "$TYPE" ]]
-	then
-		analyze_directory "$1"
-		return 0
-	fi
-
-	echo "$UNFIT"
-	return 0
-}
+###### Main script ######
 
 # Check number of arguments
 if [[ "$#" -eq 1 ]]
@@ -102,6 +145,8 @@ then
 	html_add_header "$OUTPUT_FILE"
 
 	analyze_file "$1"
+
+	html_close
 
 else
 	echo "Error: No arguments."
