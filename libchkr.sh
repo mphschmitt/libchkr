@@ -62,7 +62,8 @@ function html_add_file_infos ()
 	ID=${CHECKSUM[0]}
 	DEPENDENCIES="$2"
 
-	printf "       <div id=$ID path=$1>\n        $2\n         </div>\n" >> "$OUTPUT_FILE"
+	echo "$DEPENDENCIES"
+	printf "       <div id=$ID path=$1>\n        <p>$DEPENDENCIES</p>\n         </div>\n" >> "$OUTPUT_FILE"
 }
 
 ###### Analysis functions ######
@@ -92,7 +93,7 @@ function analyse_elf ()
 	FILE_PATH="$1"
 	DEPENDENCIES=$(ldd -r "$1")
 
-	html_add_file_infos "$1" "$DEPS"
+	html_add_file_infos "$1" "$DEPENDENCIES"
 	return 0
 }
 
