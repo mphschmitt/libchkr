@@ -9,20 +9,29 @@ SHARED_OBJECT="SHARED_OBJECT"
 DIRECTORY="DIRECTORY"
 UNFIT="UNFIT"
 
+BOOTSTRAP_CSS="bootstrap.min.css"
+BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
+
 ###### HTML functions ######
 
 function html_add_header ()
 {
+	local BOOTSTRAP_CSS_TXT
+
+	BOOTSTRAP_CSS_TXT=$(cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_CSS")
 	{
 		echo "<!DOCTYPE html>"
 		echo "<html>"
 		echo "    <head>"
 		echo "        <meta charset=\"utf-8\"></meta>"
+    		echo "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
 		echo "        <title>$PROGRAM_NAME</title>"
+		echo "        <style>"
+		echo "            $BOOTSTRAP_CSS_TXT"
+		echo "        </style>"
 		echo "    </head>"
 		echo "    <body>"
 	} >> "$OUTPUT_FILE"
-
 }
 
 function html_close ()
