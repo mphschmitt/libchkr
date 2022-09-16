@@ -9,6 +9,7 @@ SHARED_OBJECT="SHARED_OBJECT"
 DIRECTORY="DIRECTORY"
 UNFIT="UNFIT"
 
+BOOTSTRAP_JS="bootstrap.min.js"
 BOOTSTRAP_CSS="bootstrap.min.css"
 BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
 
@@ -36,8 +37,17 @@ function html_add_header ()
 
 function html_close ()
 {
-	echo "    </body>" >> "$OUTPUT_FILE"
-	echo "</html>" >> "$OUTPUT_FILE"
+	local BOOTSTRAP_JS_TXT
+
+	BOOTSTRAP_JS_TXT=$(cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS")
+
+	{
+		echo "        <script>"
+		echo "            $BOOTSTRAP_JS_TXT"
+		echo "        </script>"
+		echo "    </body>"
+		echo "</html>"
+	} >>  "$OUTPUT_FILE"
 }
 
 function html_add_file_infos ()
