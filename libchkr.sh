@@ -58,8 +58,16 @@ function html_add_file_infos ()
 	local CHECKSUM
 
 	FILE_PATH="$1"
-	CHECKSUM=($(echo -n "$FILE_PATH" | md5sum)) # md5sum adds an useless '-' character after the checksum
-	ID=${CHECKSUM[0]}
+
+	#  md5sum adds an useless '-' character after the checksum, so we remove
+	# it by splitting the string into an array and taking the first element.
+	CHECKSUM=($(echo -n "$FILE_PATH" | md5sum))
+
+	# We prepend a letter to the checksum because html ids must start with a
+	# letter. Otherwise the id is not valid and javascript querySelectors
+	# won't work.
+	ID="A"${CHECKSUM[0]}
+
 	DEPENDENCIES="$2"
 
 	echo "$DEPENDENCIES"
