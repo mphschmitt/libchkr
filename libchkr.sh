@@ -56,6 +56,8 @@ function html_add_file_infos ()
 	local FILE_PATH
 	local DEPENDENCIES
 	local CHECKSUM
+	local ID_COLLAPSE
+	local ID_HEADING
 
 	FILE_PATH="$1"
 
@@ -68,10 +70,35 @@ function html_add_file_infos ()
 	# won't work.
 	ID="A"${CHECKSUM[0]}
 
+	ID_COLLAPSE="$ID-collapse"
+	ID_HEADING="$ID-heading"
+
 	DEPENDENCIES="$2"
 
-	echo "$DEPENDENCIES"
-	printf "       <div id=$ID path=$1>\n        <p>$DEPENDENCIES</p>\n         </div>\n" >> "$OUTPUT_FILE"
+	{
+		echo "<div class=\"accordion-item\" id=\"$ID\">"
+		echo "	<h2 class=\"accordion-header\" id=\"$ID_HEADING\">"
+		echo "		<button class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#$ID_COLLAPSE\" aria-expanded=\"false\" aria-controls=\"$ID_COLLAPSE\">"
+		echo "			$FILE_PATH"
+		echo "		</button>"
+		echo "	</h2>"
+		echo "	<div id=\"$ID_COLLAPSE\" class=\"accordion-collapse collapse\" aria-labelledby=\"ID_HEADING\">"
+		echo "		<div class=\"accordion-body\">"
+		echo "			$DEPENDENCIES"
+		echo "		</div>"
+		echo "	</div>"
+		echo "</div>"
+	} >> "$OUTPUT_FILE"
+}
+
+function html_open_list ()
+{
+	echo "<div class=\"accordion\" id=\"objects_list\">" >> "$OUTPUT_FILE"
+}
+
+function html_close_list ()
+{
+	echo "</div>" >> "$OUTPUT_FILE"
 }
 
 ###### Analysis functions ######
@@ -113,11 +140,15 @@ function analyze_directory ()
 
 	if is_directory_empty "$DIR_PATH"; then return; fi
 
+	html_open_list
+
 	for file in "$DIR_PATH"/*
 	do
 		echo "file: ${file}"
 		analyze_file "$file"
 	done
+
+	html_close_list
 }
 
 function analyze_file ()
