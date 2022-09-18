@@ -5,10 +5,6 @@ PROGRAM_NAME="libchkr"
 OUTPUT_DIR="/tmp/$PROGRAM_NAME"
 OUTPUT_FILE="$OUTPUT_DIR/index.html"
 
-SHARED_OBJECT="SHARED_OBJECT"
-DIRECTORY="DIRECTORY"
-UNFIT="UNFIT"
-
 BOOTSTRAP_JS="bootstrap.min.js"
 BOOTSTRAP_CSS="bootstrap.min.css"
 BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
@@ -25,7 +21,7 @@ function html_add_header ()
 		echo "<html>"
 		echo "    <head>"
 		echo "        <meta charset=\"utf-8\"></meta>"
-    		echo "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+		echo "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
 		echo "        <title>$PROGRAM_NAME</title>"
 		echo "        <style>"
 		echo "            $BOOTSTRAP_CSS_TXT"
@@ -172,7 +168,6 @@ function analyze_file ()
 		return 0
 	fi
 
-	echo "$UNFIT"
 	return 0
 }
 
