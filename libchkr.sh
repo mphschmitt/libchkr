@@ -54,6 +54,8 @@ function html_add_file_infos ()
 	local CHECKSUM
 	local ID_COLLAPSE
 	local ID_HEADING
+	local UNDEF_SYMBOLS
+	local LIBS
 
 	FILE_PATH="$1"
 
@@ -71,6 +73,13 @@ function html_add_file_infos ()
 
 	DEPENDENCIES="$2"
 
+	OLD_IFS="$IFS"
+	IFS=$'\n'
+	UNDEF_SYMBOLS=($( echo "$DEPENDENCIES" | grep "undefined symbol"))
+	LIBS=($(echo "$DEPENDENCIES" | grep -v "undefined symbol"))
+	IFS="$OLD_IFS"
+
+
 	{
 		echo "<div class=\"accordion-item\" id=\"$ID\">"
 		echo "	<h2 class=\"accordion-header\" id=\"$ID_HEADING\">"
@@ -80,7 +89,40 @@ function html_add_file_infos ()
 		echo "	</h2>"
 		echo "	<div id=\"$ID_COLLAPSE\" class=\"accordion-collapse collapse\" aria-labelledby=\"ID_HEADING\">"
 		echo "		<div class=\"accordion-body\">"
-		echo "			$DEPENDENCIES"
+	} >> "$OUTPUT_FILE"
+
+	if [[ -n "$LIBS" ]]
+	then
+		{
+			echo "<h3>Required Shared Objects: ${#LIBS[@]}</h3>"
+			echo "<ul class=\"list-group\">"
+		} >> "$OUTPUT_FILE"
+
+		for lib in "${LIBS[@]}"
+		do
+			echo "<li class=\"list-group-item\">$lib</li>" >> "$OUTPUT_FILE"
+		done
+
+		echo "              </ul>" >> "$OUTPUT_FILE"
+	fi
+
+	if [[ -n "$UNDEF_SYMBOLS" ]]
+	then
+		{
+			echo "<h3>Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
+			echo "<ul class=\"list-group\">"
+		} >> "$OUTPUT_FILE"
+
+		for symbol in "${UNDEF_SYMBOLS[@]}"
+		do
+			echo "<li class=\"list-group-item\">$symbol</li>" >> "$OUTPUT_FILE"
+		done
+
+		echo "              </ul>" >> "$OUTPUT_FILE"
+	fi
+
+
+	{
 		echo "		</div>"
 		echo "	</div>"
 		echo "</div>"
