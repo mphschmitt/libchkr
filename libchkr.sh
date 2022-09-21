@@ -9,6 +9,8 @@ BOOTSTRAP_JS="bootstrap.min.js"
 BOOTSTRAP_CSS="bootstrap.min.css"
 BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
 
+CUSTOM_JS="custom.js"
+
 ###### HTML functions ######
 
 function html_add_header ()
@@ -33,6 +35,9 @@ function html_close ()
 	{
 		echo "        <script>"
 		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS"
+		echo "        </script>"
+		echo "        <script>"
+		cat "$BOOTSTRAP_PATH"/"$CUSTOM_JS"
 		echo "        </script>"
 		echo "    </body>"
 		echo "</html>"
