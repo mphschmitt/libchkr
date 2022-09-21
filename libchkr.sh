@@ -13,9 +13,6 @@ BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
 
 function html_add_header ()
 {
-	local BOOTSTRAP_CSS_TXT
-
-	BOOTSTRAP_CSS_TXT=$(cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_CSS")
 	{
 		echo "<!DOCTYPE html>"
 		echo "<html>"
@@ -24,7 +21,7 @@ function html_add_header ()
 		echo "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
 		echo "        <title>$PROGRAM_NAME</title>"
 		echo "        <style>"
-		echo "            $BOOTSTRAP_CSS_TXT"
+		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_CSS"
 		echo "        </style>"
 		echo "    </head>"
 		echo "    <body>"
@@ -33,13 +30,9 @@ function html_add_header ()
 
 function html_close ()
 {
-	local BOOTSTRAP_JS_TXT
-
-	BOOTSTRAP_JS_TXT=$(cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS")
-
 	{
 		echo "        <script>"
-		echo "            $BOOTSTRAP_JS_TXT"
+		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS"
 		echo "        </script>"
 		echo "    </body>"
 		echo "</html>"
