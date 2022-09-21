@@ -27,12 +27,14 @@ function html_add_header ()
 		echo "        </style>"
 		echo "    </head>"
 		echo "    <body>"
+		echo "        <div class=\"container\">"
 	} >> "$OUTPUT_FILE"
 }
 
 function html_close ()
 {
 	{
+		echo "        </div>"
 		echo "        <script>"
 		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS"
 		echo "        </script>"
