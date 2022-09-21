@@ -91,7 +91,7 @@ function html_add_file_infos ()
 		echo "		<div class=\"accordion-body\">"
 	} >> "$OUTPUT_FILE"
 
-	if [[ -n "$LIBS" ]]
+	if [[ -n "${LIBS[0]}" ]]
 	then
 		{
 			echo "<h3>Required Shared Objects: ${#LIBS[@]}</h3>"
@@ -106,7 +106,7 @@ function html_add_file_infos ()
 		echo "              </ul>" >> "$OUTPUT_FILE"
 	fi
 
-	if [[ -n "$UNDEF_SYMBOLS" ]]
+	if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
 	then
 		{
 			echo "<h3>Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
