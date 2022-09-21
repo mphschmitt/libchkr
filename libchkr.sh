@@ -161,12 +161,9 @@ function is_directory_empty ()
 function analyse_elf ()
 {
 	local FILE_PATH
-	local DEPENDENCIES
 
 	FILE_PATH="$1"
-	DEPENDENCIES=$(ldd -r "$1")
-
-	html_add_file_infos "$1" "$DEPENDENCIES"
+	html_add_file_infos "$1" "$(ldd -r "$1")"
 	return 0
 }
 
