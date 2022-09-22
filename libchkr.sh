@@ -224,6 +224,33 @@ function print_usage ()
 if [[ "$#" -eq 1 ]]
 then
 
+	while [[ $# -gt 0 ]]; do
+		case $1 in
+		-p|--port)
+			shift # past argument
+			shift # past value
+			;;
+		-v|--verbose)
+			shift # past argument
+			shift # past value
+			;;
+		-V|--Version)
+			DEFAULT=YES
+			shift # past argument
+			;;
+		-h|--help)
+			print_usage
+			exit 0
+			;;
+		-*|--*)
+			echo "Unknown option $1"
+			echo ""
+			print_usage
+			exit 1
+			;;
+		esac
+	done
+
 	mkdir "$OUTPUT_DIR"
 	touch "$OUTPUT_FILE"
 
