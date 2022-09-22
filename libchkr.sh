@@ -216,25 +216,40 @@ function print_usage ()
 	echo "  -p              The port used to access the report."
 }
 
+function run_server_on_port ()
+{
+	local PORT
+
+	PORT="$1"
+
+	echo ""
+	echo "The result can be accessed at htpp://localhost:$PORT"
+
+	while true; do { \
+		echo -ne "HTTP/1.0 200 OK\r\nContent-Length: $(wc -c < "$OUTPUT_FILE")\r\n\r\n"; \
+		cat "$OUTPUT_FILE"; } | nc -l -p "$PORT" ; \
+	done
+}
+
 ###### Main script ######
 
 # Check number of arguments
-if [[ "$#" -eq 1 ]]
+if [[ "$#" -ne 0 ]]
 then
 
-	while [[ $# -gt 0 ]]; do
-		case $1 in
-		-p|--port)
-			shift # past argument
-			shift # past value
+	PORT=""
+	TARGET=""
+
+	for i in "$@"; do
+		case $i in
+		-p=*|--port=*)
+			PORT="${i#*=}"
+			if [[ -z "$PORT" ]]; then print_usage ; exit 1; fi
+			shift # past argument=value
 			;;
 		-v|--verbose)
-			shift # past argument
-			shift # past value
 			;;
 		-V|--Version)
-			DEFAULT=YES
-			shift # past argument
 			;;
 		-h|--help)
 			print_usage
@@ -245,6 +260,9 @@ then
 			echo ""
 			print_usage
 			exit 1
+			;;
+		*)
+			TARGET="$i"
 			;;
 		esac
 	done
@@ -258,6 +276,11 @@ then
 
 	html_close
 
+	if [[ -n "$PORT" ]]
+	then
+		run_server_on_port "$PORT"
+	fi
+
 else
 	echo "Error: No arguments."
 	print_usage
@@ -265,8 +288,3 @@ else
 fi
 
 exit
-
-while true; do { \
-  echo -ne "HTTP/1.0 200 OK\r\nContent-Length: $(wc -c <index.html)\r\n\r\n"; \
-  cat index.html; } | nc -l -p 8080 ; \ 
-done
