@@ -206,10 +206,8 @@ function analyze_file ()
 
 function print_usage ()
 {
-	echo "libckr"
-	echo "Usage"
+	echo "Usage: libchkr"
 	echo "  $PROGRAM_NAME [options] <folder>"
-	echo ""
 	echo "Options"
 	echo "  <folder>        The name of the folder to analyze."
 	echo "  -v              Verbose output."
