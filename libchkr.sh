@@ -9,15 +9,66 @@ BOOTSTRAP_JS="bootstrap.min.js"
 BOOTSTRAP_CSS="bootstrap.min.css"
 BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
 
+BOOTSTRAP_SIDEBAR_CSS="bootstrap_sidebar.css"
+
+MAIN_CSS="main.css"
+
 CUSTOM_JS="custom.js"
 
 ###### HTML functions ######
+
+function html_add_sidebar ()
+{
+	{
+		echo "            <div class=\"d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top\" style=\"width: 280px;\">"
+		echo "                <a href=\"/\" class=\"d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none\">"
+		echo "                    <svg class=\"bi me-2\" width=\"40\" height=\"32\"><use xlink:href=\"#bootstrap\"/></svg>"
+		echo "                    <span class=\"fs-4\">$PROGRAM_NAME</span>"
+		echo "                </a>"
+		echo "                <hr>"
+		echo "                <ul class=\"nav nav-pills flex-column mb-auto\">"
+		echo "                    <li class=\"nav-item\">"
+		echo "                        <a href=\"#\" class=\"nav-link\" aria-current=\"page\">"
+		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#home\"/></svg>"
+		echo "                            Executables"
+		echo "                        </a>"
+		echo "                    </li>"
+		echo "                    <li>"
+		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
+		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#speedometer2\"/></svg>"
+		echo "                            Libraries"
+		echo "                        </a>"
+		echo "                    </li>"
+		echo "                    <li>"
+		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
+		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#table\"/></svg>"
+		echo "                            Warnings"
+		echo "                        </a>"
+		echo "                    </li>"
+		echo "                    <li>"
+		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
+		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#grid\"/></svg>"
+		echo "                            Statistics"
+		echo "                        </a>"
+		echo "                    </li>"
+		echo "                </ul>"
+		echo "                <hr>"
+		echo "                <div>"
+		echo "                    <a href=\"#\" class=\"d-flex align-items-center text-white text-decoration-none\" id=\"repo_link\">"
+		echo "                        <img src=\"https://play-lh.googleusercontent.com/PCpXdqvUWfCW1mXhH1Y_98yBpgsWxuTSTofy3NGMo9yBTATDyzVkqU580bfSln50bFU\" alt=\"\" width=\"32\" height=\"32\" class=\"rounded-circle me-2\">"
+		echo "                        <strong>Find us on Github</strong>"
+		echo "                    </a>"
+		echo "                </div>"
+		echo "            </div>"
+	} >> "$OUTPUT_FILE"
+}
 
 function html_add_header ()
 {
 	{
 		echo "<!DOCTYPE html>"
 		echo "<html>"
+
 		echo "    <head>"
 		echo "        <meta charset=\"utf-8\"></meta>"
 		echo "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
@@ -25,16 +76,31 @@ function html_add_header ()
 		echo "        <style>"
 		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_CSS"
 		echo "        </style>"
+		echo "        <style>"
+		cat "$BOOTSTRAP_PATH"/"$MAIN_CSS"
+		echo "        </style>"
+		echo "        <style>"
+		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_SIDEBAR_CSS"
+		echo "        </style>"
 		echo "    </head>"
+
 		echo "    <body>"
-		echo "        <div class=\"container\">"
+		echo "        <div class=\"main\">"
+	} >> "$OUTPUT_FILE"
+
+	html_add_sidebar
+
+	{
+		echo "            <div class=\"b-example-divider\"></div>"
+		echo "            <div>" # open second column
 	} >> "$OUTPUT_FILE"
 }
 
 function html_close ()
 {
 	{
-		echo "        </div>"
+		echo "            <div>" # close second column
+		echo "        <div>" # close main div
 		echo "        <script>"
 		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS"
 		echo "        </script>"
