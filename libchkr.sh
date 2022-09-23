@@ -7,7 +7,7 @@ OUTPUT_FILE="$OUTPUT_DIR/index.html"
 
 BOOTSTRAP_JS="bootstrap.min.js"
 BOOTSTRAP_CSS="bootstrap.min.css"
-BOOTSTRAP_PATH="/usr/local/bin/libchkr_assets"
+ASSETS_PATH="/usr/local/bin/libchkr_assets"
 
 BOOTSTRAP_SIDEBAR_CSS="bootstrap_sidebar.css"
 
@@ -74,13 +74,13 @@ function html_add_header ()
 		echo "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
 		echo "        <title>$PROGRAM_NAME</title>"
 		echo "        <style>"
-		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_CSS"
+		cat "$ASSETS_PATH"/"$BOOTSTRAP_CSS"
 		echo "        </style>"
 		echo "        <style>"
-		cat "$BOOTSTRAP_PATH"/"$MAIN_CSS"
+		cat "$ASSETS_PATH"/"$MAIN_CSS"
 		echo "        </style>"
 		echo "        <style>"
-		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_SIDEBAR_CSS"
+		cat "$ASSETS_PATH"/"$BOOTSTRAP_SIDEBAR_CSS"
 		echo "        </style>"
 		echo "    </head>"
 
@@ -102,10 +102,10 @@ function html_close ()
 		echo "            <div>" # close second column
 		echo "        <div>" # close main div
 		echo "        <script>"
-		cat "$BOOTSTRAP_PATH"/"$BOOTSTRAP_JS"
+		cat "$ASSETS_PATH"/"$BOOTSTRAP_JS"
 		echo "        </script>"
 		echo "        <script>"
-		cat "$BOOTSTRAP_PATH"/"$CUSTOM_JS"
+		cat "$ASSETS_PATH"/"$CUSTOM_JS"
 		echo "        </script>"
 		echo "    </body>"
 		echo "</html>"
