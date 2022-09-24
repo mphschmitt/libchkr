@@ -340,7 +340,7 @@ then
 			print_usage
 			exit 0
 			;;
-		-*|--*)
+		-*)
 			echo "Unknown option $1"
 			echo ""
 			print_usage
