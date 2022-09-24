@@ -176,7 +176,7 @@ function html_add_file_infos ()
 
 			for symbol in "${UNDEF_SYMBOLS[@]}"
 			do
-				echo "<li class=\"list-group-item\">$symbol</li>"
+				echo "<li class=\"list-group-item\">$(lstrip "$symbol" "undefined symbol: ")</li>"
 			done
 
 			echo "              </ul>"
@@ -295,6 +295,12 @@ function run_server_on_port ()
 		echo -ne "HTTP/1.0 200 OK\r\nContent-Length: $(wc -c < "$OUTPUT_FILE")\r\n\r\n"; \
 		cat "$OUTPUT_FILE"; } | nc -l -p "$PORT" ; \
 	done
+}
+
+# From https://github.com/dylanaraps/pure-bash-bible#strip-pattern-from-start-of-string
+# Usage: lstrip "string" "pattern"
+function lstrip () {
+    printf '%s\n' "${1##$2}"
 }
 
 ###### Main script ######
