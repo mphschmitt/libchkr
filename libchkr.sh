@@ -347,6 +347,14 @@ then
 			exit 1
 			;;
 		*)
+			if [[ -n "$TARGET" ]]
+			then
+				echo "Error: Only one folder can be analyzed at one."
+				echo ""
+				print_usage
+				exit 1
+			fi
+
 			TARGET="$i"
 			;;
 		esac
@@ -358,7 +366,7 @@ then
 
 	html_add_header "$OUTPUT_FILE"
 
-	analyze_file "$1"
+	analyze_file "$TARGET"
 
 	html_close
 
