@@ -11,6 +11,12 @@ ASSETS_PATH="/usr/local/bin/libchkr_assets"
 
 BOOTSTRAP_SIDEBAR_CSS="bootstrap_sidebar.css"
 
+ICON_STATS=bar-chart-line.svg
+ICON_EXE=boxes.svg
+ICON_LIBS=box-fill.svg
+ICON_WARN=exclamation-triangle.svg
+ICON_SYST_INFO=gear.svg
+
 MAIN_CSS="main.css"
 
 CUSTOM_JS="custom.js"
@@ -28,32 +34,32 @@ function html_add_sidebar ()
 		echo "                <hr>"
 		echo "                <ul class=\"nav nav-pills flex-column mb-auto\">"
 		echo "                    <li class=\"nav-item\">"
-		echo "                        <a href=\"#\" class=\"nav-link\" aria-current=\"page\">"
-		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#home\"/></svg>"
+		echo "                        <a href=\"#\" class=\"nav-link text-white\" aria-current=\"page\">"
+		cat "$ASSETS_PATH/icons/$ICON_EXE"
 		echo "                            Executables"
 		echo "                        </a>"
 		echo "                    </li>"
 		echo "                    <li>"
 		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
-		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#speedometer2\"/></svg>"
+		cat "$ASSETS_PATH/icons/$ICON_LIBS"
 		echo "                            Libraries"
 		echo "                        </a>"
 		echo "                    </li>"
 		echo "                    <li>"
 		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
-		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#table\"/></svg>"
+		cat "$ASSETS_PATH/icons/$ICON_WARN"
 		echo "                            Warnings"
 		echo "                        </a>"
 		echo "                    </li>"
 		echo "                    <li>"
 		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
-		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#grid\"/></svg>"
+		cat "$ASSETS_PATH/icons/$ICON_STATS"
 		echo "                            Statistics"
 		echo "                        </a>"
 		echo "                    </li>"
 		echo "                    <li>"
 		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
-		echo "                            <svg class=\"bi me-2\" width=\"16\" height=\"16\"><use xlink:href=\"#grid\"/></svg>"
+		cat "$ASSETS_PATH/icons/$ICON_SYST_INFO"
 		echo "                            System informations"
 		echo "                        </a>"
 		echo "                    </li>"
