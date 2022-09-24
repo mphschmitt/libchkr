@@ -218,7 +218,7 @@ function is_directory_empty ()
 	local NB_OF_FILES
 
 	DIR_PATH="$1"
-	NB_OF_FILES=$(ls -1 $DIR_PATH | wc -l)
+	NB_OF_FILES=$(ls -1 "$DIR_PATH" | wc -l)
 
 	echo "There are $NB_OF_FILES in the directory $DIR_PATH"
 	if [[ "$NB_OF_FILES" -eq 0 ]]
