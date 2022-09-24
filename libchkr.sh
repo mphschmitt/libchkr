@@ -91,7 +91,7 @@ function html_add_header ()
 	html_add_sidebar
 
 	{
-		echo "            <div class=\"b-example-divider\"></div>"
+		echo "            <div class=\"b-example-divider sticky-top\"></div>"
 		echo "            <div>" # open second column
 	} >> "$OUTPUT_FILE"
 }
