@@ -2,7 +2,7 @@
 
 
 PROGRAM_NAME="libchkr"
-OUTPUT_DIR="/tmp/$PROGRAM_NAME"
+OUTPUT_DIR=".libchkr"
 OUTPUT_FILE="$OUTPUT_DIR/index.html"
 
 BOOTSTRAP_JS="bootstrap.min.js"
@@ -333,6 +333,7 @@ then
 		esac
 	done
 
+	rm -rf "$OUTPUT_DIR"
 	mkdir "$OUTPUT_DIR"
 	touch "$OUTPUT_FILE"
 
