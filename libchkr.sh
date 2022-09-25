@@ -281,6 +281,41 @@ function analyze_file ()
 	return 0
 }
 
+function get_sys_info ()
+{
+	{
+		echo "<table class=\"table\">"
+		echo "    <tbody>"
+		echo "        <tr>"
+		echo "            <th scope=\"row\"></th>"
+		echo "            <td>Cpu architecture</td>"
+		echo "            <td>$(uname -p)</td>"
+		echo "        </tr>"
+		echo "        <tr>"
+		echo "            <th scope=\"row\"></th>"
+		echo "            <td>Machine Hardware</td>"
+		echo "            <td>$(uname -m)</td>"
+		echo "        </tr>"
+		echo "        <tr>"
+		echo "            <th scope=\"row\"></th>"
+		echo "            <td>Hardware platform (OS compiled for)</td>"
+		echo "            <td>$(uname -i)</td>"
+		echo "        </tr>"
+		echo "        <tr>"
+		echo "            <th scope=\"row\"></th>"
+		echo "            <td>Kernel name</td>"
+		echo "            <td>$(uname -s)</td>"
+		echo "        </tr>"
+		echo "        <tr>"
+		echo "            <th scope=\"row\"></th>"
+		echo "            <td>Kernel version</td>"
+		echo "            <td>$(uname -v)</td>"
+		echo "        </tr>"
+		echo "    </tbody>"
+		echo "</table>"
+	} >> "$OUTPUT_FILE"
+}
+
 ###### Utilities functions ######
 
 function print_usage ()
@@ -366,9 +401,13 @@ then
 
 	html_add_header "$OUTPUT_FILE"
 
-	echo "<div id=\"report_objects\">" >> "$OUTPUT_FILE"
+	echo "<div id=\"report_sys_info\" hidden=\"true\" class=\"report\">" >> "$OUTPUT_FILE"
+	get_sys_info
+	echo "</div>" >> "$OUTPUT_FILE"
+
+	echo "<div id=\"report_objects\" class=\"report\">" >> "$OUTPUT_FILE"
 	analyze_file "$TARGET"
-	echo "<div>" >> "$OUTPUT_FILE"
+	echo "</div>" >> "$OUTPUT_FILE"
 
 	html_close
 
