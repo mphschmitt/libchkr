@@ -366,7 +366,9 @@ then
 
 	html_add_header "$OUTPUT_FILE"
 
+	echo "<div id=\"report_objects\">" >> "$OUTPUT_FILE"
 	analyze_file "$TARGET"
+	echo "<div>" >> "$OUTPUT_FILE"
 
 	html_close
 
