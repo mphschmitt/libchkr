@@ -58,7 +58,7 @@ function html_add_sidebar ()
 		echo "                            Statistics"
 		echo "                        </a>"
 		echo "                    </li>"
-		echo "                    <li class=\"menu-link\">"
+		echo "                    <li id=\"sidebar_sys_info\" class=\"menu-link\">"
 		echo "                        <a href=\"#\" class=\"nav-link text-white\">"
 		cat "$ASSETS_PATH/icons/$ICON_SYST_INFO"
 		echo "                            System informations"
