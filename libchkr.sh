@@ -158,7 +158,6 @@ function html_add_file_infos ()
 	LIBS=($(echo "$DEPENDENCIES" | grep -v "undefined symbol"))
 	IFS="$OLD_IFS"
 
-
 	{
 		echo "<div class=\"accordion-item\" id=\"$ID\">"
 		echo "	<h2 class=\"accordion-header\" id=\"$ID_HEADING\">"
@@ -189,7 +188,7 @@ function html_add_file_infos ()
 
 			for symbol in "${UNDEF_SYMBOLS[@]}"
 			do
-				echo "<li class=\"list-group-item\">$(lstrip "$symbol" "undefined symbol: ")</li>"
+				echo "<li class=\"list-group-item\">$(format_symbol "$symbol", "$FILE_PATH")</li>"
 			done
 
 			echo "              </ul>"
@@ -348,7 +347,20 @@ function run_server_on_port ()
 # From https://github.com/dylanaraps/pure-bash-bible#strip-pattern-from-start-of-string
 # Usage: lstrip "string" "pattern"
 function lstrip () {
-    printf '%s\n' "${1##$2}"
+	printf '%s\n' "${1##$2}"
+}
+
+function format_symbol () {
+	local SYMBOL
+	local PATH
+
+	SYMBOL="$1"
+	PATH="($2),"
+
+	SYMBOL=${SYMBOL%"$PATH"}
+	SYMBOL=${SYMBOL#"undefined symbol: "}
+
+	printf "$SYMBOL"
 }
 
 ###### Main script ######
