@@ -170,8 +170,8 @@ function html_add_file_infos ()
 
 		if [[ -n "${LIBS[0]}" ]]
 		then
-				echo "<h3>Required Shared Objects: ${#LIBS[@]}</h3>"
-				echo "<ul class=\"list-group\">"
+			echo "<h3>Required Shared Objects: ${#LIBS[@]}</h3>"
+			echo "<ul class=\"list-group\">"
 
 			for lib in "${LIBS[@]}"
 			do
@@ -183,15 +183,33 @@ function html_add_file_infos ()
 
 		if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
 		then
-				echo "<h3>Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
-				echo "<ul class=\"list-group\">"
+			echo "<h3>Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
+			echo "<table class=\"table\">"
+
+			echo "    <thead>"
+			echo "        <tr>"
+			echo "            <th scope=\"col\" style=\"width: 25%\">Symbol</th>"
+			echo "            <th scope=\"col\" style=\"width: 25%\">Unmangled symbol</th>"
+			echo "        </tr>"
+			echo "    </thead>"
+			echo "    <tbody>"
 
 			for symbol in "${UNDEF_SYMBOLS[@]}"
 			do
-				echo "<li class=\"list-group-item\">$(format_symbol "$symbol", "$FILE_PATH")</li>"
+				local FORMATTED_SYMBOL
+				local DEMANGLED_SYMBOL
+
+				FORMATTED_SYMBOL=$(format_symbol "$symbol", "$FILE_PATH")
+				DEMANGLED_SYMBOL=$(echo "$FORMATTED_SYMBOL" | c++filt)
+
+				echo "<tr>"
+				echo "    <td>$FORMATTED_SYMBOL</td>"
+				echo "    <td>$DEMANGLED_SYMBOL</td>"
+				echo "</tr>"
 			done
 
-			echo "              </ul>"
+			echo "    </tbody>"
+			echo "</table>"
 		fi
 		echo "		</div>"
 		echo "	</div>"
