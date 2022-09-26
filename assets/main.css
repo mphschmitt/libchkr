@@ -16,4 +16,7 @@ html {
   overflow-x: auto;
 }
 
-
+td {
+  word-wrap:break-word;
+  word-break:break-all;
+}
