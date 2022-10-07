@@ -24,6 +24,11 @@ CUSTOM_JS="custom.js"
 
 ###### HTML functions ######
 
+function html_create_warnings_section ()
+{
+	echo "<div id=\"report_warnings\" hidden=\"true\" class=\"report\"></div>"  >> "$OUTPUT_FILE"
+}
+
 function html_add_sidebar ()
 {
 	{
@@ -159,7 +164,7 @@ function html_add_file_infos ()
 	IFS="$OLD_IFS"
 
 	{
-		echo "<div class=\"accordion-item\" id=\"$ID\">"
+		echo "<div class=\"elf accordion-item\" id=\"$ID\">"
 		echo "	<h2 class=\"accordion-header\" id=\"$ID_HEADING\">"
 		echo "		<button class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#$ID_COLLAPSE\" aria-expanded=\"false\" aria-controls=\"$ID_COLLAPSE\">"
 		echo "			$FILE_PATH"
@@ -170,7 +175,7 @@ function html_add_file_infos ()
 
 		if [[ -n "${LIBS[0]}" ]]
 		then
-			echo "<h3>Required Shared Objects: ${#LIBS[@]}</h3>"
+			echo "<h3 class=\"required_shared_objects\">Required Shared Objects: ${#LIBS[@]}</h3>"
 			echo "<ul class=\"list-group\">"
 
 			for lib in "${LIBS[@]}"
@@ -183,7 +188,7 @@ function html_add_file_infos ()
 
 		if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
 		then
-			echo "<h3>Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
+			echo "<h3 class=\"undef_symbols\" sym_nb=\"${#UNDEF_SYMBOLS[@]}\">Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
 			echo "<table class=\"table\">"
 
 			echo "    <thead>"
@@ -438,6 +443,8 @@ then
 	echo "<div id=\"report_objects\" class=\"report\">" >> "$OUTPUT_FILE"
 	analyze_file "$TARGET"
 	echo "</div>" >> "$OUTPUT_FILE"
+
+	html_create_warnings_section
 
 	html_close
 
