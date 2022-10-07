@@ -24,26 +24,31 @@ window.onload = () => {
 					reports.forEach((htmlElem, id) => {
 						htmlElem.hidden = (id != "report_objects");
 					});
+					document.getElementById('report_objects').scrollIntoView()
 					break;
 				case "Libraries":
 					reports.forEach((htmlElem, id) => {
 						htmlElem.hidden = (id != "report_objects");
 					});
+					document.getElementById('report_objects').scrollIntoView()
 					break;
 				case "Warnings":
 					reports.forEach((htmlElem, id) => {
 						htmlElem.hidden = (id != "report_warnings");
 					});
+					document.getElementById('report_warnings').scrollIntoView()
 					break;
 				case "Statistics":
 					reports.forEach((htmlElem, id) => {
 						htmlElem.hidden = (id != "report_objects");
 					});
+					document.getElementById('report_objects').scrollIntoView()
 					break;
 				case "System informations":
 					reports.forEach((htmlElem, id) => {
 						htmlElem.hidden = (id != "report_sys_info");
 					});
+					document.getElementById('report_sys_info').scrollIntoView()
 					break;
 				default:
 					break;
@@ -100,7 +105,6 @@ window.onload = () => {
 				if (item.innerText.trim() == "Executables")
 					item.click();
 			});
-			document.getElementById('report_objects').scrollIntoView()
 
 			elf.scrollIntoView();
 
