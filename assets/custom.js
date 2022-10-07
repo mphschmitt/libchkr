@@ -11,56 +11,62 @@ window.onload = () => {
 	for (let report of document.getElementsByClassName("report"))
 		reports.set(report.id, report);
 
-	sidebar_items.forEach(item => {
-		item.addEventListener("click", e => {
-			sidebar_items.forEach( _it => {
-				_it.classList.remove("active");
-			});
-			item.classList.add("active");
-
-			switch(item.innerText.trim())
-			{
-				case "Executables":
-					reports.forEach((htmlElem, id) => {
-						htmlElem.hidden = (id != "report_objects");
-					});
-					document.getElementById('report_objects').scrollIntoView()
-					break;
-				case "Libraries":
-					reports.forEach((htmlElem, id) => {
-						htmlElem.hidden = (id != "report_objects");
-					});
-					document.getElementById('report_objects').scrollIntoView()
-					break;
-				case "Warnings":
-					reports.forEach((htmlElem, id) => {
-						htmlElem.hidden = (id != "report_warnings");
-					});
-					document.getElementById('report_warnings').scrollIntoView()
-					break;
-				case "Statistics":
-					reports.forEach((htmlElem, id) => {
-						htmlElem.hidden = (id != "report_objects");
-					});
-					document.getElementById('report_objects').scrollIntoView()
-					break;
-				case "System informations":
-					reports.forEach((htmlElem, id) => {
-						htmlElem.hidden = (id != "report_sys_info");
-					});
-					document.getElementById('report_sys_info').scrollIntoView()
-					break;
-				default:
-					break;
-			};
+	let itemOnClick = (e) => {
+		sidebar_items.forEach( _it => {
+			_it.classList.remove("active");
 		});
+		e.target.classList.add("active");
+
+		switch(e.target.innerText.trim())
+		{
+			case "Executables":
+				reports.forEach((htmlElem, id) => {
+					htmlElem.hidden = (id != "report_objects");
+				});
+				document.getElementById('report_objects').scrollIntoView()
+				break;
+			case "Libraries":
+				reports.forEach((htmlElem, id) => {
+					htmlElem.hidden = (id != "report_objects");
+				});
+				document.getElementById('report_objects').scrollIntoView()
+				break;
+			case "Warnings":
+				reports.forEach((htmlElem, id) => {
+					htmlElem.hidden = (id != "report_warnings");
+				});
+				document.getElementById('report_warnings').scrollIntoView()
+				break;
+			case "Statistics":
+				reports.forEach((htmlElem, id) => {
+					htmlElem.hidden = (id != "report_objects");
+				});
+				document.getElementById('report_objects').scrollIntoView()
+				break;
+			case "System informations":
+				reports.forEach((htmlElem, id) => {
+					htmlElem.hidden = (id != "report_sys_info");
+				});
+				document.getElementById('report_sys_info').scrollIntoView()
+				break;
+			default:
+				break;
+		}
+	}
+
+	sidebar_items.forEach(item => {
+		item.addEventListener("click", itemOnClick);
 	});
+
+	let nb_of_warnings = 0;
 
 	for (let elf of document.getElementsByClassName("elf"))
 	{
 		let undef = elf.getElementsByClassName("undef_symbols");
 		if (undef.length <= 0)
 			continue;
+
+		nb_of_warnings += 1;
 
 		/* Get number of undefined symbols. */
 		let nb_symbls = undef.item(0).attributes.getNamedItem("sym_nb").nodeValue;
@@ -114,5 +120,17 @@ window.onload = () => {
 		});
 	}
 
+	if (nb_of_warnings == 0)
+	{
+		sidebar_items.forEach(item => {
+			if (item.innerText.trim() == "Warnings")
+			{
+				let classList = item.getAttribute('class');
+				item.setAttribute('class', classList + ' item-disabled');
+				item.removeEventListener('click', itemOnClick);
+				return;
+			}
+		});
+	}
 };
 

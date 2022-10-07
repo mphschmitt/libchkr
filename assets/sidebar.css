@@ -18,3 +18,12 @@
   color: rgba(0, 0, 0, .85);
   background-color: #0d6efd;
 }
+
+.menu-link.item-disabled  {
+  color:#D3D3D3;
+  background-color: #696969;
+}
+
+.menu-link.item-disabled:hover  {
+  cursor: not-allowed;
+}
