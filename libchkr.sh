@@ -17,6 +17,7 @@ ICON_EXE=boxes.svg
 ICON_LIBS=box-fill.svg
 ICON_WARN=exclamation-triangle.svg
 ICON_SYST_INFO=gear.svg
+ICON_GITHUB=github.svg
 
 MAIN_CSS="main.css"
 
@@ -72,8 +73,10 @@ function html_add_sidebar ()
 		echo "                </ul>"
 		echo "                <hr>"
 		echo "                <div>"
-		echo "                    <a href=\"#\" class=\"d-flex align-items-center text-white text-decoration-none\" id=\"repo_link\">"
-		echo "                        <img src=\"https://play-lh.googleusercontent.com/PCpXdqvUWfCW1mXhH1Y_98yBpgsWxuTSTofy3NGMo9yBTATDyzVkqU580bfSln50bFU\" alt=\"\" width=\"32\" height=\"32\" class=\"rounded-circle me-2\">"
+		echo "                    <a href=\"https://github.com/mphschmitt/libchkr\" class=\"d-flex align-items-center text-white text-decoration-none\" id=\"repo_link\">"
+		echo "                        <span width=\"32\" height=\"32\" class=\"rounded-circle me-2\">"
+		cat "$ASSETS_PATH/icons/$ICON_GITHUB"
+		echo "                        </span>"
 		echo "                        <strong>Find us on Github</strong>"
 		echo "                    </a>"
 		echo "                </div>"
