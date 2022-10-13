@@ -167,7 +167,7 @@ function html_add_file_infos ()
 	LIBS=($(echo "$DEPENDENCIES" | grep -v "undefined symbol"))
 	IFS="$OLD_IFS"
 
-	BUTTON_CLASS="accordion-button"
+	BUTTON_CLASS="accordion-button collapsed"
 
 	if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
 	then
