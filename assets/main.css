@@ -21,3 +21,7 @@ td {
   word-wrap:break-word;
   word-break:break-all;
 }
+
+button.accordion-button.warning {
+  background-color: #ffc107 !important;
+}

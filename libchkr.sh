@@ -143,6 +143,7 @@ function html_add_file_infos ()
 	local ID_HEADING
 	local UNDEF_SYMBOLS
 	local LIBS
+	local BUTTON_CLASS
 
 	FILE_PATH="$1"
 
@@ -166,10 +167,23 @@ function html_add_file_infos ()
 	LIBS=($(echo "$DEPENDENCIES" | grep -v "undefined symbol"))
 	IFS="$OLD_IFS"
 
+	BUTTON_CLASS="accordion-button"
+
+	if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
+	then
+		BUTTON_CLASS="$BUTTON_CLASS warning"
+	fi
+
 	{
 		echo "<div class=\"elf accordion-item\" id=\"$ID\">"
 		echo "	<h2 class=\"accordion-header\" id=\"$ID_HEADING\">"
-		echo "		<button class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#$ID_COLLAPSE\" aria-expanded=\"false\" aria-controls=\"$ID_COLLAPSE\">"
+		echo "		<button class=\"$BUTTON_CLASS\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#$ID_COLLAPSE\" aria-expanded=\"false\" aria-controls=\"$ID_COLLAPSE\">"
+		if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
+		then
+			echo "<span width=\"32\" height=\"32\" class=\"rounded-circle me-2\">"
+			cat "$ASSETS_PATH/icons/$ICON_WARN"
+			echo "</span>"
+		fi
 		echo "			$FILE_PATH"
 		echo "		</button>"
 		echo "	</h2>"
