@@ -259,7 +259,7 @@ function is_directory_empty ()
 	DIR_PATH="$1"
 	NB_OF_FILES=$(ls -1 "$DIR_PATH" | wc -l)
 
-	echo "There are $NB_OF_FILES in the directory $DIR_PATH"
+	echo "Checking $NB_OF_FILES files in $DIR_PATH"
 	if [[ "$NB_OF_FILES" -eq 0 ]]
 	then
 		true; return
@@ -303,14 +303,14 @@ function analyze_file ()
 
 	FILE_PATH="$1"
 
-	TYPE=$(file "$1" | grep "shared object" )
+	TYPE=$(file --brief "$1" | grep "shared object" )
 	if [[ -n "$TYPE" ]]
 	then
 		analyse_elf "$FILE_PATH"
 		return 0
 	fi
 
-	TYPE=$(file "$FILE_PATH" | grep "directory" )
+	TYPE=$(file --brief "$FILE_PATH" | grep "directory" )
 	if [[ -n "$TYPE" ]]
 	then
 		analyze_directory "$FILE_PATH"
