@@ -96,7 +96,7 @@ window.onload = () => {
 
 		let footer = document.createElement('div');
 		footer.setAttribute('class', 'card-footer text-muted');
-		footer.innerText = 'Missing objects detected with \'ldd -R\'.'
+		footer.innerText = 'Missing objects detected with \'ldd -r\'.'
 
 		card_body.appendChild(h5);
 		card_body.appendChild(p);

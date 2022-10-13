@@ -144,6 +144,7 @@ function html_add_file_infos ()
 	local UNDEF_SYMBOLS
 	local LIBS
 	local BUTTON_CLASS
+	local WARNS
 
 	FILE_PATH="$1"
 
@@ -166,6 +167,13 @@ function html_add_file_infos ()
 	UNDEF_SYMBOLS=($( echo "$DEPENDENCIES" | grep "undefined symbol"))
 	LIBS=($(echo "$DEPENDENCIES" | grep -v "undefined symbol"))
 	IFS="$OLD_IFS"
+
+	WARNS=${#UNDEF_SYMBOLS[@]}
+
+	if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
+	then
+		NB_OF_WARNINGS=$((NB_OF_WARNINGS+WARNS))
+	fi
 
 	BUTTON_CLASS="accordion-button collapsed"
 
@@ -205,7 +213,7 @@ function html_add_file_infos ()
 
 		if [[ -n "${UNDEF_SYMBOLS[0]}" ]]
 		then
-			echo "<h3 class=\"undef_symbols\" sym_nb=\"${#UNDEF_SYMBOLS[@]}\">Undefined symbols after code relocation: ${#UNDEF_SYMBOLS[@]}</h3>"
+			echo "<h3 class=\"undef_symbols\" sym_nb=\"$WARNS\">Undefined symbols after code relocation: $WARNS</h3>"
 			echo "<table class=\"table\">"
 
 			echo "    <thead>"
@@ -274,6 +282,9 @@ function analyse_elf ()
 
 	FILE_PATH="$1"
 	html_add_file_infos "$1" "$(ldd -r "$1")"
+
+	NB_OF_ELF_FILES=$((NB_OF_ELF_FILES+1))
+
 	return 0
 }
 
@@ -289,7 +300,7 @@ function analyze_directory ()
 
 	for file in "$DIR_PATH"/*
 	do
-		echo "file: ${file}"
+		echo "check ${file}"
 		analyze_file "$file"
 	done
 
@@ -302,6 +313,8 @@ function analyze_file ()
 	local FILE_PATH
 
 	FILE_PATH="$1"
+
+	NB_OF_CHECKED_FILES=$((NB_OF_CHECKED_FILES+1))
 
 	TYPE=$(file --brief "$1" | grep "shared object" )
 	if [[ -n "$TYPE" ]]
@@ -375,9 +388,6 @@ function run_server_on_port ()
 
 	PORT="$1"
 
-	echo ""
-	echo "The result can be accessed at htpp://localhost:$PORT"
-
 	while true; do { \
 		echo -ne "HTTP/1.0 200 OK\r\nContent-Length: $(wc -c < "$OUTPUT_FILE")\r\n\r\n"; \
 		cat "$OUTPUT_FILE"; } | nc -l -p "$PORT" ; \
@@ -411,6 +421,9 @@ then
 
 	PORT=""
 	TARGET=""
+	NB_OF_CHECKED_FILES=0
+	NB_OF_ELF_FILES=0
+	NB_OF_WARNINGS=0
 
 	for i in "$@"; do
 		case $i in
@@ -465,9 +478,19 @@ then
 
 	html_close
 
+	echo ""
+	echo "Summary:"
+	echo "--------"
+	echo "Checked $NB_OF_CHECKED_FILES files."
+	echo "Found $NB_OF_ELF_FILES elf shared objects."
+	echo "$NB_OF_WARNINGS symbols have not been found after function and data relocations."
+
 	if [[ -n "$PORT" ]]
 	then
+		echo -e "\nThe result can be accessed at htpp://localhost:$PORT"
 		run_server_on_port "$PORT"
+	else
+		echo -e "\nThe result can be accessed at $OUTPUT_FILE"
 	fi
 
 else
