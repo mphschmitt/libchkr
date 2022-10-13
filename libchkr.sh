@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PROGRAM_NAME="libchkr"
+PROGRAM_VERSION="1.0.0"
 
 OUTPUT_DIR=".libchkr"
 OUTPUT_FILE="$OUTPUT_DIR/index.html"
@@ -372,6 +373,16 @@ function get_sys_info ()
 
 ###### Utilities functions ######
 
+function print_version ()
+{
+	echo "$PROGRAM_NAME $PROGRAM_VERSION"
+	echo ""
+	echo "Copyright (C) 2022 Mathias Schmitt"
+	echo "License: GNU Affero General Public License <https://gnu.org/licenses/agpl.html>."
+	echo "This is free software, and you are welcome to change and redistribute it."
+	echo "This program comes with ABSOLUTELY NO WARRANTY.";
+}
+
 function print_usage ()
 {
 	echo "Usage: libchkr"
@@ -437,6 +448,8 @@ then
 		-v|--verbose)
 			;;
 		-V|--Version)
+			print_version
+			exit 0
 			;;
 		-h|--help)
 			print_usage
