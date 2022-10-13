@@ -56,6 +56,8 @@ function html_add_sidebar ()
 		echo "                        <a class=\"menu-link nav-link text-white\">"
 		cat "$ASSETS_PATH/icons/$ICON_WARN"
 		echo "                            Warnings"
+		echo "                          <span id=\"menu_warn_nb\"class=\"badge rounded-pill text-bg-warning\">"
+		echo "				</span>"
 		echo "                        </a>"
 		echo "                    </li>"
 		echo "                    <li>"

@@ -17,45 +17,46 @@ window.onload = () => {
 		});
 		e.target.classList.add("active");
 
-		switch(e.target.innerText.trim())
+		let txt = e.target.innerText.trim();
+		if (txt.includes('Executables'))
 		{
-			case "Executables":
-				reports.forEach((htmlElem, id) => {
-					htmlElem.hidden = (id != "report_objects");
-				});
-				document.getElementById('report_objects').scrollIntoView()
-				break;
-			case "Libraries":
-				reports.forEach((htmlElem, id) => {
-					htmlElem.hidden = (id != "report_objects");
-				});
-				document.getElementById('report_objects').scrollIntoView()
-				break;
-			case "Warnings":
-				reports.forEach((htmlElem, id) => {
-					htmlElem.hidden = (id != "report_warnings");
-				});
-				document.getElementById('report_warnings').scrollIntoView()
-				break;
-			case "Statistics":
-				reports.forEach((htmlElem, id) => {
-					htmlElem.hidden = (id != "report_objects");
-				});
-				document.getElementById('report_objects').scrollIntoView()
-				break;
-			case "System informations":
-				reports.forEach((htmlElem, id) => {
-					htmlElem.hidden = (id != "report_sys_info");
-				});
-				document.getElementById('report_sys_info').scrollIntoView()
-				break;
-			default:
-				break;
+			reports.forEach((htmlElem, id) => {
+				htmlElem.hidden = (id != "report_objects");
+			});
+			document.getElementById('report_objects').scrollIntoView()
+		}
+		else if (txt.includes('Libraries'))
+		{
+			reports.forEach((htmlElem, id) => {
+				htmlElem.hidden = (id != "report_objects");
+			});
+			document.getElementById('report_objects').scrollIntoView()
+		}
+		else if (txt.includes('Warnings'))
+		{
+			reports.forEach((htmlElem, id) => {
+				htmlElem.hidden = (id != "report_warnings");
+			});
+			document.getElementById('report_warnings').scrollIntoView()
+		}
+		else if (txt.includes('Statistics'))
+		{
+			reports.forEach((htmlElem, id) => {
+				htmlElem.hidden = (id != "report_objects");
+			});
+			document.getElementById('report_objects').scrollIntoView()
+		}
+		else if (txt.includes('System informations'))
+		{
+			reports.forEach((htmlElem, id) => {
+				htmlElem.hidden = (id != "report_sys_info");
+			});
+			document.getElementById('report_sys_info').scrollIntoView()
 		}
 	}
 
 	sidebar_items.forEach(item => {
-		item.addEventListener("click", itemOnClick);
+		item.parentElement.addEventListener("click", itemOnClick);
 	});
 
 	let nb_of_warnings = 0;
@@ -124,13 +125,17 @@ window.onload = () => {
 	{
 		sidebar_items.forEach(item => {
 			if (item.innerText.trim() == "Warnings")
-			{
-				let classList = item.getAttribute('class');
+			{ let classList = item.getAttribute('class');
 				item.setAttribute('class', classList + ' item-disabled');
-				item.removeEventListener('click', itemOnClick);
+				item.parentElement.removeEventListener('click', itemOnClick);
 				return;
 			}
 		});
+	}
+	else
+	{
+		let pill = document.getElementById('menu_warn_nb');
+		pill.innerText = nb_of_warnings;
 	}
 };
 
