@@ -20,8 +20,21 @@ ASSETS_DIR := libchkr_assets
 INSTALL_DIR := /usr/local/bin
 ASSETS := assets
 
+MOSES_PATH := moses
+
+default: all
+
+.PHONY: all
+all: moses
+
+.PHONY: moses
+moses:
+	@make -C ${MOSES_PATH}
+
+
 .PHONY: install
 install:
+	@make install -C ${MOSES_PATH}
 	@cp ${SRC} ${INSTALL_DIR}/${PROG_NAME}
 	@cp -r ${ASSETS} ${INSTALL_DIR}/${ASSETS_DIR}
 	@chmod u+x,g+x,a+x ${INSTALL_DIR}/${PROG_NAME}
@@ -29,6 +42,7 @@ install:
 
 .PHONY: uninstall
 uninstall:
+	@make uninstall -C ${MOSES_PATH}
 	@rm -rf ${INSTALL_DIR}/${PROG_NAME}
 	@rm -rf ${INSTALL_DIR}/${ASSETS_DIR}
 
