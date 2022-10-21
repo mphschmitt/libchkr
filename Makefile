@@ -27,6 +27,10 @@ default: all
 .PHONY: all
 all: moses
 
+re:
+	@make clean -C ${MOSES_PATH}
+	@make -C ${MOSES_PATH}
+
 .PHONY: moses
 moses:
 	@make -C ${MOSES_PATH}
