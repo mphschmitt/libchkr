@@ -1,0 +1,3 @@
+[submodule "moses"]
+	path = moses
+	url = git@github.com:mphschmitt/moses.git
