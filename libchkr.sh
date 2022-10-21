@@ -502,7 +502,7 @@ then
 
 	if [[ -n "$PORT" ]]
 	then
-		echo -e "\nThe result can be accessed at htpp://localhost:$PORT"
+		echo -e "\nThe result can be accessed at http://localhost:$PORT"
 		run_server_on_port "$PORT"
 	else
 		echo -e "\nThe result can be accessed at $OUTPUT_FILE"
