@@ -447,7 +447,7 @@ then
 			;;
 		-v|--verbose)
 			;;
-		-V|--Version)
+		-V|--version)
 			print_version
 			exit 0
 			;;
